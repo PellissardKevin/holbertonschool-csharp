@@ -1,4 +1,3 @@
 /.mono
 /.vscode
-csharp-hello_world/0-new_project
-csharp-hello_world/1-new_project
+csharp-hello_world/*-new_project
