@@ -1,6 +1,6 @@
 /.mono
 /.vscode
 csharp-hello_world/*-new_project
-/3-writeline/global.json
-/3-writeline/bin
-/3-writeline/obj
+global.json
+bin
+obj
