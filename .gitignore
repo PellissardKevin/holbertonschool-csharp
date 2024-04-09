@@ -4,3 +4,5 @@ csharp-hello_world/*-new_project
 global.json
 bin
 obj
+*.sln
+.tool-versions
