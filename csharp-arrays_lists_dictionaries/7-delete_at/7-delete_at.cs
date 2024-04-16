@@ -11,17 +11,15 @@ class List
             return myList;
         }
 
-        List<int> updatedList = new List<int>();
-
-        for (int i = 0; i < myList.Count; i++)
+        for (int i = index; i < myList.Count; i++)
         {
-            if (i != index)
+            if (i + 1 < myList.Count)
             {
-                updatedList.Add(myList[i]);
+                myList[i] = myList[i + 1];
             }
         }
-        myList.RemoveRange(2, 1);
-        return updatedList;
+        myList.RemoveRange(myList.Count - 1, 1);
+        return myList;
     }
 }
 
