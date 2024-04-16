@@ -6,7 +6,7 @@ class Dictionary
     public static string BestScore(Dictionary<string, int> myList)
     {
         int save = 0;
-        string name = null;
+        string name = "None";
 
         foreach (var item in myList)
         {
