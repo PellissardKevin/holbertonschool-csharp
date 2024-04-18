@@ -37,5 +37,4 @@ class LList
         return newNode;
     }
     }
-}
 
