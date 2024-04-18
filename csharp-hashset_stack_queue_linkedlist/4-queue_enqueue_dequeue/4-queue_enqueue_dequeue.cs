@@ -9,15 +9,15 @@ class MyQueue
 
         if (aQueue.Count > 0)
         {
-            Console.WriteLine($"Top item: {aQueue.Peek()}");
+            Console.WriteLine($"First item: {aQueue.Peek()}");
         }
         else
         {
-            Console.WriteLine("Stack is empty");
+            Console.WriteLine("Queue is empty");
         }
 
         bool containsSearch = aQueue.Contains(search);
-        Console.WriteLine($"Stack contains \"{search}\": {containsSearch}");
+        Console.WriteLine($"Queue contains \"{search}\": {containsSearch}");
 
 
         if (containsSearch)
