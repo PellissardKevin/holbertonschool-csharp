@@ -11,7 +11,7 @@ class Int
         }
         catch (DivideByZeroException)
         {
-            Console.WriteLine("Cannogt divide by zero");
+            Console.WriteLine("Cannot divide by zero");
             result = 0;
         }
         finally
