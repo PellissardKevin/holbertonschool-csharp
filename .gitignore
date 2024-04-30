@@ -4,3 +4,4 @@ bin
 obj
 *.sln
 .tool-versions
+*-main.cs
