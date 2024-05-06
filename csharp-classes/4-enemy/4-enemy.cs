@@ -6,6 +6,7 @@ namespace Enemies
     class Zombie
     {
         private int health;
+        private string name = "(No name)";
         public Zombie()
         {
             health = 0;
@@ -22,6 +23,15 @@ namespace Enemies
         public int GetHealth()
         {
             return health;
+        }
+        public string Name
+        {
+            set {
+                name = value;
+            }
+            get {
+                return name;
+            }
         }
     }
 }
