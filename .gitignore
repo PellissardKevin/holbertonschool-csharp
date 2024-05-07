@@ -2,6 +2,6 @@
 /.vscode
 bin
 obj
-*.sln
+holbertonschool-csharp.sln
 .tool-versions
 *-main.cs
