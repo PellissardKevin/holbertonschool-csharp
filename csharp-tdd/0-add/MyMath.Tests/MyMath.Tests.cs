@@ -2,26 +2,28 @@ using NUnit.Framework;
 
 namespace MyMath.Tests
 {
-    /// <summary>
-    /// Tests for the Operations class
-    /// </summary>
     public class OperationsTests
     {
-        /// <summary>
-        /// Tests the Add operation on two valid integer arguments
-        /// </summary>
         [Test]
-        public void Add_AddsTwoNumbers_CorrectResult()
+        public void Add_WhenTwoIntsAdded_ReturnsCorrectSum(
+            [Values(1, -3, 5, -10, 18, -28, 56, 199, 1035, 30456)] int a,
+            [Values(0, -6, 9, 13, 17, 42, 78, 852, -9099, 12000)] int b)
         {
-            // Arrange
-            int a = 5;
-            int b = 7;
+            // Act - add two ints using Add method
+            var testSum = Operations.Add(a, b);
 
-            // Act
-            int result = Operations.Add(a, b);
+            // Assert - correct sum is produced
+            Assert.That(testSum == (a + b));
+        }
 
-            // Assert
-            Assert.AreEqual(12, result);
+        [Test]
+        public void Add_WhenMinAndMaxAdded_ReturnsNegOne()
+        {
+            // Act - add two ints using Add method
+            var testSum = Operations.Add(int.MinValue, int.MaxValue);
+
+            // Assert - correct sum is produced
+            Assert.That(testSum == -1);
         }
     }
 }
