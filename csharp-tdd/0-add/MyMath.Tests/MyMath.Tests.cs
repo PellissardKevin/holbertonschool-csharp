@@ -2,8 +2,14 @@ using NUnit.Framework;
 
 namespace MyMath.Tests
 {
+    /// <summary>
+    /// Tests for the Operations class
+    /// </summary>
     public class OperationsTests
     {
+        /// <summary>
+        /// Tests the Add operation on two valid integer arguments
+        /// </summary>
         [Test]
         public void Add_AddsTwoNumbers_CorrectResult()
         {
