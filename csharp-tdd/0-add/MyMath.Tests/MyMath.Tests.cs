@@ -2,6 +2,7 @@ using NUnit.Framework;
 
 namespace MyMath.Tests
 {
+    [TestFixture]
     public class OperationsTests
     {
         [Test]
