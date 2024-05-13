@@ -7,17 +7,15 @@ public class Obj
     {
         Type objectType = myObj.GetType();
 
-        // Get properties
+        Console.WriteLine($"{objectType.Name} Properties:");
         PropertyInfo[] properties = objectType.GetProperties();
-        Console.WriteLine("Int32 Properties:");
         foreach (PropertyInfo property in properties)
         {
             Console.WriteLine(property.Name);
         }
 
-        // Get methods
+        Console.WriteLine($"{objectType.Name} Methods:");
         MethodInfo[] methods = objectType.GetMethods();
-        Console.WriteLine("Int32 Methods:");
         foreach (MethodInfo method in methods)
         {
             Console.WriteLine(method.Name);
