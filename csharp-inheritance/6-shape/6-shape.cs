@@ -23,6 +23,10 @@ public class Rectangle : Shape
     private int width;
     private int height;
 
+    /// <summary>
+    /// Gets or sets the width of the rectangle.
+    /// </summary>
+    /// <exception cref="ArgumentException">Thrown when the provided width is negative.</exception>
     public int Width
     {
         get => width;
@@ -38,7 +42,11 @@ public class Rectangle : Shape
             }
         }
     }
-
+    
+    /// <summary>
+    /// Gets or sets the height of the rectangle.
+    /// </summary>
+    /// <exception cref="ArgumentException">Thrown when the provided height is negative.</exception>
     public int Height
     {
         get => height;
