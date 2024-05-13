@@ -1,5 +1,8 @@
 ﻿using System;
 
+/// <summary>
+/// Represents a basic shape with an area calculation method.
+/// </summary>
 public class Shape
 {
     /// <summary>
@@ -11,3 +14,4 @@ public class Shape
         throw new NotImplementedException("Area() is not implemented");
     }
 }
+
