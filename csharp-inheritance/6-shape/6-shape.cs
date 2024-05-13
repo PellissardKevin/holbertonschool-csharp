@@ -16,13 +16,12 @@ public class Shape
 }
 
 /// <summary>
-/// Represents a rectangle/>.
+/// Represents a rectangle shape that inherits from <see cref="Shape"/>.
 /// </summary>
 public class Rectangle : Shape
 {
     private int width;
     private int height;
-
 
     public int Width
     {
@@ -31,9 +30,12 @@ public class Rectangle : Shape
         {
             if (value < 0)
             {
-                throw new ArgumentException("Width must be greater than or equal to 0.");
+                throw new ArgumentException("Width must be greater than or equal to 0");
             }
-            width = value;
+            else
+            {
+                width = value;
+            }
         }
     }
 
@@ -44,9 +46,13 @@ public class Rectangle : Shape
         {
             if (value < 0)
             {
-                throw new ArgumentException("Height must be greater than or equal to 0.");
+                throw new ArgumentException("Height must be greater than or equal to 0");
             }
-            height = value;
+            else
+            {
+                height = value;
+            }
         }
     }
 }
+
