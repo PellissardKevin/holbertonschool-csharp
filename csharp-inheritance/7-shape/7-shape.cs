@@ -59,7 +59,7 @@ public class Rectangle : Shape
     /// <returns>The area of the rectangle.</returns>
     public new int Area()
     {
-        return width * height;
+        return Width * Height;
     }
 
     /// <summary>
