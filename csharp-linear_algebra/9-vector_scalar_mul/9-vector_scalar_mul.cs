@@ -7,7 +7,6 @@ class VectorMath
     {
         if (vector.Length == 2 || vector.Length == 3)
         {
-            new double[] MulVector = 0;
             for (int i = 0; i < vector.Length; i++)
             {
                 vector[i] *= scalar;
