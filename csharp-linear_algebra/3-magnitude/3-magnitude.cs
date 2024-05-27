@@ -5,14 +5,21 @@ class VectorMath
 {
     public static double Magnitude(double[] vector)
     {
-        Double dimensions = vector.Length;
-
-        if (dimensions != 2 || dimensions != 3)
+        if (vector.Length == 2 || vector.Length == 3)
         {
-            return (-1);
-        }
+            double sumOfSquares = 0;
+            foreach (double component in vector)
+            {
+                sumOfSquares += component * component;
+            }
 
-        return dimensions;
+            double magnitude = Math.Sqrt(sumOfSquares);
+
+            return Math.Round(magnitude, 2);
+        }
+        else
+        {
+            return -1;
+        }
     }
 }
-
