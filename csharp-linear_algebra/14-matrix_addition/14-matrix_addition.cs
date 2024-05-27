@@ -4,15 +4,9 @@ public class MatrixMath
 {
     public static double[,] Add(double[,] matrix1, double[,] matrix2)
     {
-        // Get the dimensions of the matrices
-        int rows1 = matrix1.GetLength(0);
-        int cols1 = matrix1.GetLength(1);
-        int rows2 = matrix2.GetLength(0);
-        int cols2 = matrix2.GetLength(1);
-
-        // Check if the matrices have the same dimensions
-        if ((rows1 == rows2 && cols1 == cols2) &&
-            ((rows1 == 2 && cols1 == 2) || (rows1 == 3 && cols1 == 3)))
+        if (((matrix1.GetLength(0) == 2 && matrix1.GetLength(1) == 2) ||
+         (matrix1.GetLength(0) == 3 && matrix1.GetLength(1) == 3)) &&
+         matrix1.GetLength(0) == matrix2.GetLength(0))
         {
             for (int y = 0; y < matrix1.GetLength(0); y++)
             {
@@ -24,7 +18,6 @@ public class MatrixMath
             }
             return matrix1;
         }
-
         return new double[,] { { -1 } };
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 
 public class VectorMath
 {
@@ -6,8 +7,6 @@ public class VectorMath
     {
         if (vector1.Length == vector2.Length && (vector1.Length == 2 || vector1.Length == 3))
         {
-            double dotProduct = 0;
-
             // Calculate the dot product
             for (int i = 0; i < vector1.Length; i++)
                 vector1[i] *= vector2[i];
@@ -15,9 +14,6 @@ public class VectorMath
             // Return sum of products
             return vector1.Sum();
         }
-        else
-        {
-            return -1;
-        }
+        return -1;
     }
 }
