@@ -5,7 +5,7 @@ class VectorMath
 {
     public static double Magnitude(double[] vector)
     {
-        int dimensions = vector.Length;
+        Double dimensions = vector.Length;
 
         if (dimensions != 2 || dimensions != 3)
         {
