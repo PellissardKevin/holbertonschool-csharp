@@ -15,7 +15,7 @@ class VectorMath
                 resultVector[i] = vector1[i] + vector2[i];
             }
 
-            return vectorResult;
+            return resultVector;
         }
         else
         {
