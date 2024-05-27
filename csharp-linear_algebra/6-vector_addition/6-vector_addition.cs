@@ -8,9 +8,12 @@ class VectorMath
     {
         if ((vector1.Length == 2 || vector1.Length == 3) && vector1.Length == vector2.Length)
         {
-            Vector vectorResult = new Vector();
+            double[] resultVector = new double[vector1.Length];
 
-            vectorResult = Vector.Add(vector1, vector2);
+            for (int i = 0; i < vector1.Length; i++)
+            {
+                resultVector[i] = vector1[i] + vector2[i];
+            }
 
             return vectorResult;
         }
