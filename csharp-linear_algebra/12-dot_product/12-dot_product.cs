@@ -10,15 +10,14 @@ public class VectorMath
 
             // Calculate the dot product
             for (int i = 0; i < vector1.Length; i++)
-            {
-                dotProduct += vector1[i] * vector2[i];
-            }
-
-            return dotProduct;
+                vector1[i] *= vector2[i];
+    
+            // Return sum of products
+            return vector1.Sum();
         }
         else
         {
-            return null;
+            return -1;
         }
     }
 }
