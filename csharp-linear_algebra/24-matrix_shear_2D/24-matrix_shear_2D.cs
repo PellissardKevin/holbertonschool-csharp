@@ -11,11 +11,8 @@ class MatrixMath
     /// </summary>
     public static double[,] Shear2D(double[,] matrix, char direction, double factor)
     {
-        int rows = matrix.GetLength(0);
-        int cols = matrix.GetLength(1);
-
-        // Check if the matrix is square
-        if (rows != cols)
+        // Check if the matrix is of size 2x2
+        if (matrix.Length != 4 || matrix.GetLength(0) != 2 || matrix.GetLength(1) != 2)
         {
             return new double[,] { { -1 } };
         }
@@ -26,40 +23,29 @@ class MatrixMath
             return new double[,] { { -1 } };
         }
 
-        // Initialize the shear matrix based on the direction
-        double[,] shearMatrix;
+        // Initialize the shear matrix and the result matrix
+        double[,] shearMat = { { 1, 0 }, { 0, 1 } };
+        double[,] shearedMat = new double[2, 2];
+        int numLines = matrix.GetLength(0);
+
+        // Set the shear factor in the shear matrix
         if (direction == 'x')
         {
-            shearMatrix = new double[,]
-            {
-                { 1, factor },
-                { 0, 1 }
-            };
+            shearMat[0, 1] = factor;
         }
-        else // direction == 'y'
+        else
         {
-            shearMatrix = new double[,]
-            {
-                { 1, 0 },
-                { factor, 1 }
-            };
+            shearMat[1, 0] = factor;
         }
 
-        // Perform the matrix multiplication
-        double[,] result = new double[rows, cols];
-        for (int i = 0; i < rows; i++)
+        // Perform the shearing operation
+        for (int i = 0; i < numLines; i++)
         {
-            for (int j = 0; j < cols; j++)
-            {
-                result[i, j] = 0;
-                for (int k = 0; k < cols; k++)
-                {
-                    result[i, j] += shearMatrix[i, k] * matrix[k, j];
-                }
-            }
+            shearedMat[i, 0] = shearMat[0, 0] * matrix[i, 0] + shearMat[0, 1] * matrix[i, 1];
+            shearedMat[i, 1] = shearMat[1, 0] * matrix[i, 0] + shearMat[1, 1] * matrix[i, 1];
         }
 
-        return result;
+        return shearedMat;
     }
 }
 
