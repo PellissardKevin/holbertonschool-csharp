@@ -4,29 +4,29 @@ public class MatrixMath
 {
     public static double[,] Inverse2D(double[,] matrix)
     {
+        // Check if the matrix is a 2D matrix
         if (matrix.GetLength(0) != 2 || matrix.GetLength(1) != 2)
         {
-            return new double[,] {{-1}};
+            return new double[,] { { -1 } }; // Return [-1] for non-2D matrices
         }
 
-        double a = matrix[0, 0];
-        double b = matrix[0, 1];
-        double c = matrix[1, 0];
-        double d = matrix[1, 1];
+        // Calculate the determinant of the 2x2 matrix
+        double determinant = matrix[0, 0] * matrix[1, 1] - matrix[0, 1] * matrix[1, 0];
 
-        double determinant = a * d - b * c;
-
+        // Check if the matrix is non-invertible
         if (determinant == 0)
         {
-            return new double[,] {{-1}};
+            return new double[,] { { -1 } }; // Return [-1] for non-invertible matrices
         }
 
-        double[,] matrixInverse = new double[2, 2];
-        matrixInverse[0, 0] = Math.Round(d / determinant, 2);
-        matrixInverse[0, 1] = Math.Round(-b / determinant, 2);
-        matrixInverse[1, 0] = Math.Round(-c / determinant, 2);
-        matrixInverse[1, 1] = Math.Round(a / determinant, 2);
+        // Calculate the inverse of the 2x2 matrix
+        double[,] inverse = new double[2, 2];
+        inverse[0, 0] = matrix[1, 1] / determinant;
+        inverse[0, 1] = -matrix[0, 1] / determinant;
+        inverse[1, 0] = -matrix[1, 0] / determinant;
+        inverse[1, 1] = matrix[0, 0] / determinant;
 
-        return matrixInverse;
+        return inverse;
     }
 }
+
