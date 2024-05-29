@@ -1,24 +1,32 @@
 ﻿using System;
 
-public class MatrixMath
+class MatrixMath
 {
     public static double[,] Inverse2D(double[,] matrix)
     {
         if (matrix.GetLength(0) != 2 || matrix.GetLength(1) != 2)
-            return new double[,] { { -1 } };
+        {
+            return new double[,] {{-1}};
+        }
 
-        double det = matrix[0, 0] * matrix[1, 1] - matrix[1, 0] * matrix[0, 1];
+        double a = matrix[0, 0];
+        double b = matrix[0, 1];
+        double c = matrix[1, 0];
+        double d = matrix[1, 1];
 
-        if (det == 0)
-            return new double[,] { { -1 } };
+        double determinant = a * d - b * c;
 
-        double[,] inverse = new double[,] { { matrix[1, 1] / det, -matrix[0, 1] / det }, { -matrix[1, 0] / det, matrix[0, 0] / det } };
+        if (determinant == 0)
+        {
+            return new double[,] {{-1}};
+        }
 
-        for (int i = 0; i < 2; i++)
-            for (int j = 0; j < 2; j++)
-                inverse[i, j] = Math.Round(inverse[i, j], 2);
+        double[,] matrixInverse = new double[2, 2];
+        matrixInverse[0, 0] = Math.Round(d / determinant, 2);
+        matrixInverse[0, 1] = Math.Round(-b / determinant, 2);
+        matrixInverse[1, 0] = Math.Round(-c / determinant, 2);
+        matrixInverse[1, 1] = Math.Round(a / determinant, 2);
 
-        return inverse;
+        return matrixInverse;
     }
 }
-
