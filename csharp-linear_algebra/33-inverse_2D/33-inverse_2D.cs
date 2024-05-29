@@ -6,7 +6,7 @@ public class MatrixMath
     {
         if (matrix.GetLength(0) != 2 || matrix.GetLength(1) != 2)
         {
-            return new double[,] { { -1 } };
+            return new double[,] {{-1}};
         }
 
         double a = matrix[0, 0];
@@ -18,7 +18,7 @@ public class MatrixMath
 
         if (determinant == 0)
         {
-            return new double[,] { { -1 } };
+            return new double[,] {{-1}};
         }
 
         double[,] matrixInverse = new double[2, 2];
