@@ -20,11 +20,12 @@ public class MatrixMath
         }
 
         // Calculate the inverse of the 2x2 matrix
-        double[,] inverse = new double[2, 2];
-        inverse[0, 0] = matrix[1, 1] / determinant;
-        inverse[0, 1] = -matrix[0, 1] / determinant;
-        inverse[1, 0] = -matrix[1, 0] / determinant;
-        inverse[1, 1] = matrix[0, 0] / determinant;
+        double[,] invert = new double[,] {{matrix[1,1] / det, -matrix[0,1] / det}, {-matrix[1,0] / det, matrix[0,0] / det}};
+
+        inverse[0, 0] = Math.Round(matrix[1, 1] / determinant);
+        inverse[0, 1] = Math.Round(-matrix[0, 1] / determinant);
+        inverse[1, 0] = Math.Round(-matrix[1, 0] / determinant);
+        inverse[1, 1] = Math.Round(matrix[0, 0] / determinant);
 
         return inverse;
     }
