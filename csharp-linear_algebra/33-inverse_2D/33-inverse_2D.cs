@@ -4,23 +4,15 @@ public class MatrixMath
 {
     public static double[,] Inverse2D(double[,] matrix)
     {
-        // Check if the matrix is a 2D matrix
         if (matrix.GetLength(0) != 2 || matrix.GetLength(1) != 2)
-        {
-            return new double[,] { { -1 } }; // Return [-1] for non-2D matrices
-        }
+            return new double[,] { { -1 } };
 
-        // Calculate the determinant of the 2x2 matrix
-        double determinant = matrix[0, 0] * matrix[1, 1] - matrix[0, 1] * matrix[1, 0];
+        double det = matrix[0, 0] * matrix[1, 1] - matrix[1, 0] * matrix[0, 1];
 
-        // Check if the matrix is non-invertible
-        if (determinant == 0)
-        {
-            return new double[,] { { -1 } }; // Return [-1] for non-invertible matrices
-        }
+        if (det == 0)
+            return new double[,] { { -1 } };
 
-        // Calculate the inverse of the 2x2 matrix
-        double[,] inverse = new double[,] { { matrix[1, 1] / determinant, -matrix[0, 1] / determinant }, { -matrix[1, 0] / determinant, matrix[0, 0] / determinant } };
+        double[,] inverse = new double[,] { { matrix[1, 1] / det, -matrix[0, 1] / det }, { -matrix[1, 0] / det, matrix[0, 0] / det } };
 
         for (int i = 0; i < 2; i++)
             for (int j = 0; j < 2; j++)
