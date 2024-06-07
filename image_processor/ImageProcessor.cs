@@ -1,9 +1,8 @@
 ﻿using System;
+using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Threading.Tasks;
-using SixLabors.ImageSharp;
-using SixLabors.ImageSharp.PixelFormats;
-using SixLabors.ImageSharp.Processing;
 
 public class ImageProcessor
 {
@@ -13,20 +12,41 @@ public class ImageProcessor
     /// <param name="filenames">A list of images to invert.</param>
     public static void Inverse(string[] filenames)
     {
-        // Iterate through all image files
         Parallel.ForEach(filenames, (imagePath) =>
         {
-            // Load the image
-            using (Image<Rgba32> image = Image.Load<Rgba32>(imagePath))
+            using (Bitmap image = new Bitmap(imagePath))
             {
-                // Invert the image colors
-                image.Mutate(x => x.Invert());
+                // Lock the bitmaps bits
+                Rectangle rect = new Rectangle(0, 0, image.Width, image.Height);
+                BitmapData bmpData = image.LockBits(rect, ImageLockMode.ReadWrite, image.PixelFormat);
+
+                // Get the address of the first line
+                IntPtr ptr = bmpData.Scan0;
+
+                // Declare an array to hold the bytes of the bitmap
+                int bytes = Math.Abs(bmpData.Stride) * image.Height;
+                byte[] rgbValues = new byte[bytes];
+
+                // Copy the RGB values into the array
+                System.Runtime.InteropServices.Marshal.Copy(ptr, rgbValues, 0, bytes);
+
+                // Invert each pixel
+                for (int i = 0; i < rgbValues.Length; i++)
+                {
+                    rgbValues[i] = (byte)(255 - rgbValues[i]);
+                }
+
+                // Copy the RGB values back to the bitmap
+                System.Runtime.InteropServices.Marshal.Copy(rgbValues, 0, ptr, bytes);
+
+                // Unlock the bits
+                image.UnlockBits(bmpData);
 
                 // Extract filename from path and edit for new save
-                string currentDirectory = Directory.GetCurrentDirectory();
-                string filename = Path.GetFileNameWithoutExtension(imagePath);
+                string fileName = Path.GetFileNameWithoutExtension(imagePath);
                 string extension = Path.GetExtension(imagePath);
-                string newFilename = Path.Combine(currentDirectory, filename + "_inverse" + extension);
+                string directory = Path.GetDirectoryName(imagePath);
+                string newFilename = Path.Combine(directory, fileName + "_inverse" + extension);
 
                 // Save inverted image to new file
                 image.Save(newFilename);
