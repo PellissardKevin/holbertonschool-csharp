@@ -40,10 +40,10 @@ public class ImageProcessor
 
     private static string GetNewFilename(string originalFilename)
     {
-        string directory = Path.GetDirectoryName(originalFilename);
+        string currentDirectory = Directory.GetCurrentDirectory();
         string filenameWithoutExtension = Path.GetFileNameWithoutExtension(originalFilename);
         string extension = Path.GetExtension(originalFilename);
 
-        return Path.Combine(directory, $"{filenameWithoutExtension}_inverse{extension}");
+        return Path.Combine(currentDirectory, $"{filenameWithoutExtension}_inverse{extension}");
     }
 }
