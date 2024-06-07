@@ -7,51 +7,30 @@ using System.Threading.Tasks;
 
 public class ImageProcessor
 {
+    /// <summary>
+    /// Inverts a list of image(s).
+    /// </summary>
+    /// <param name="filenames">A list of images to invert.</param>
     public static void Inverse(string[] filenames)
     {
-        // Check if filenames are provided or get files from the "images" directory
-        if (filenames.Length == 0)
+        // Iterate through all image files
+        Parallel.ForEach(filenames, (imagePath) =>
         {
-            string directory = "images/";
-            if (!Directory.Exists(directory))
+            // Load the image
+            using (Image<Rgba32> image = Image.Load<Rgba32>(imagePath))
             {
-                Console.WriteLine($"Directory '{directory}' not found.");
-                return;
-            }
+                // Invert the image colors
+                image.Mutate(x => x.Invert());
 
-            filenames = Directory.GetFiles(directory, "*.jpg");
-            if (filenames.Length == 0)
-            {
-                Console.WriteLine("No images found in the directory.");
-                return;
-            }
-        }
+                // Extract filename from path and edit for new save
+                string currentDirectory = Directory.GetCurrentDirectory();
+                string filename = Path.GetFileNameWithoutExtension(imagePath);
+                string extension = Path.GetExtension(imagePath);
+                string newFilename = Path.Combine(currentDirectory, filename + "_inverse" + extension);
 
-        // Get the current directory
-        string currentDirectory = Directory.GetCurrentDirectory();
-
-        // Process each file in parallel
-        Parallel.ForEach(filenames, filename =>
-        {
-            try
-            {
-                using (Image<Rgba32> image = Image.Load<Rgba32>(filename))
-                {
-                    image.Mutate(ctx => ctx.Invert());
-
-                    string filenameWithoutExtension = Path.GetFileNameWithoutExtension(filename);
-                    string extension = Path.GetExtension(filename);
-                    string newFilename = Path.Combine(currentDirectory, $"{filenameWithoutExtension}_inverse{extension}");
-
-                    image.Save(newFilename);
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error processing file {filename}: {ex.Message}");
+                // Save inverted image to new file
+                image.Save(newFilename);
             }
         });
-
-        Console.WriteLine("Image processing completed.");
     }
 }
