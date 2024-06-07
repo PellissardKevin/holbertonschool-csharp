@@ -9,41 +9,49 @@ public class ImageProcessor
 {
     public static void Inverse(string[] filenames)
     {
-        var tasks = new Task[filenames.Length];
-
-        for (int i = 0; i < filenames.Length; i++)
+        // Check if filenames are provided or get files from the "images" directory
+        if (filenames.Length == 0)
         {
-            string filename = filenames[i];
-            tasks[i] = Task.Run(() => InverseImage(filename));
-        }
-
-        Task.WaitAll(tasks);
-    }
-
-    private static void InverseImage(string filename)
-    {
-        try
-        {
-            using (Image<Rgba32> image = Image.Load<Rgba32>(filename))
+            string directory = "images/";
+            if (!Directory.Exists(directory))
             {
-                image.Mutate(ctx => ctx.Invert());
+                Console.WriteLine($"Directory '{directory}' not found.");
+                return;
+            }
 
-                string newFilename = GetNewFilename(filename);
-                image.Save(newFilename);
+            filenames = Directory.GetFiles(directory, "*.jpg");
+            if (filenames.Length == 0)
+            {
+                Console.WriteLine("No images found in the directory.");
+                return;
             }
         }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"Error processing file {filename}: {ex.Message}");
-        }
-    }
 
-    private static string GetNewFilename(string originalFilename)
-    {
+        // Get the current directory
         string currentDirectory = Directory.GetCurrentDirectory();
-        string filenameWithoutExtension = Path.GetFileNameWithoutExtension(originalFilename);
-        string extension = Path.GetExtension(originalFilename);
 
-        return Path.Combine(currentDirectory, $"{filenameWithoutExtension}_inverse{extension}");
+        // Process each file in parallel
+        Parallel.ForEach(filenames, filename =>
+        {
+            try
+            {
+                using (Image<Rgba32> image = Image.Load<Rgba32>(filename))
+                {
+                    image.Mutate(ctx => ctx.Invert());
+
+                    string filenameWithoutExtension = Path.GetFileNameWithoutExtension(filename);
+                    string extension = Path.GetExtension(filename);
+                    string newFilename = Path.Combine(currentDirectory, $"{filenameWithoutExtension}_inverse{extension}");
+
+                    image.Save(newFilename);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error processing file {filename}: {ex.Message}");
+            }
+        });
+
+        Console.WriteLine("Image processing completed.");
     }
 }
