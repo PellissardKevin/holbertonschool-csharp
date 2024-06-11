@@ -18,8 +18,7 @@ class ImageProcessor
                 int width = image.Width;
                 int height = image.Height;
 
-                Rectangle rect = new Rectangle(0, 0, width, height);
-                BitmapData bmpData = image.LockBits(rect, ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb);
+                BitmapData bmpData = image.LockBits(new Rectangle(0, 0, width, height), ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb);
 
                 int stride = bmpData.Stride;
                 byte[] pixelBuffer = new byte[stride * height];
