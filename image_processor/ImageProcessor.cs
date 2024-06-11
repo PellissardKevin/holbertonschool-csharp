@@ -22,25 +22,15 @@ class ImageProcessor
                 BitmapData bmpData = image.LockBits(rect, ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb);
 
                 int stride = bmpData.Stride;
-                int bytesPerPixel = 4; // 4 bytes per pixel (32 bits)
-
                 byte[] pixelBuffer = new byte[stride * height];
 
                 System.Runtime.InteropServices.Marshal.Copy(bmpData.Scan0, pixelBuffer, 0, pixelBuffer.Length);
 
-                for (int y = 0; y < height; y++)
+                for (int x = 0; x < pixelBuffer.Length; x += 4)
                 {
-                    int currentLine = y * stride;
-
-                    for (int x = 0; x < width; x++)
-                    {
-                        int currentPixel = currentLine + x * bytesPerPixel;
-
-                        // Invert RGB values
-                        pixelBuffer[currentPixel] = (byte)(255 - pixelBuffer[currentPixel]);         // Blue
-                        pixelBuffer[currentPixel + 1] = (byte)(255 - pixelBuffer[currentPixel + 1]); // Green
-                        pixelBuffer[currentPixel + 2] = (byte)(255 - pixelBuffer[currentPixel + 2]); // Red
-                    }
+                    pixelBuffer[x] ^= 0xFF;
+                    pixelBuffer[x + 1] ^= 0xFF;
+                    pixelBuffer[x + 2] ^= 0xFF;
                 }
 
                 System.Runtime.InteropServices.Marshal.Copy(pixelBuffer, 0, bmpData.Scan0, pixelBuffer.Length);
