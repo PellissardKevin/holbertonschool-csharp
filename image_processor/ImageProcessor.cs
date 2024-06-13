@@ -25,12 +25,13 @@ class ImageProcessor
 
                 System.Runtime.InteropServices.Marshal.Copy(bmpData.Scan0, pixelBuffer, 0, pixelBuffer.Length);
 
-                for (int x = 0; x < pixelBuffer.Length; x += 4)
+                Parallel.For(0, pixelBuffer.Length / 4, i =>
                 {
+                    int x = i * 4;
                     pixelBuffer[x] ^= 0xFF;
                     pixelBuffer[x + 1] ^= 0xFF;
                     pixelBuffer[x + 2] ^= 0xFF;
-                }
+                });
 
                 System.Runtime.InteropServices.Marshal.Copy(pixelBuffer, 0, bmpData.Scan0, pixelBuffer.Length);
 
