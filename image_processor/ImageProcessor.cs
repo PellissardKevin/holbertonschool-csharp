@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.IO;
 using System.Threading.Tasks;
 
 class ImageProcessor
@@ -21,26 +22,30 @@ class ImageProcessor
                 BitmapData bmpData = image.LockBits(new Rectangle(0, 0, width, height), ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb);
 
                 int stride = bmpData.Stride;
-                byte[] pixelBuffer = new byte[stride * height];
+                int bytes = stride * height;
+                byte[] pixelBuffer = new byte[bytes];
 
-                System.Runtime.InteropServices.Marshal.Copy(bmpData.Scan0, pixelBuffer, 0, pixelBuffer.Length);
+                System.Runtime.InteropServices.Marshal.Copy(bmpData.Scan0, pixelBuffer, 0, bytes);
 
-                Parallel.For(0, pixelBuffer.Length / 4, i =>
+                // Iterate through the pixels sequentially
+                for (int i = 0; i < pixelBuffer.Length; i += 4)
                 {
-                    int x = i * 4;
-                    pixelBuffer[x] ^= 0xFF;
-                    pixelBuffer[x + 1] ^= 0xFF;
-                    pixelBuffer[x + 2] ^= 0xFF;
-                });
+                    pixelBuffer[i] ^= 0xFF;        // Blue
+                    pixelBuffer[i + 1] ^= 0xFF;    // Green
+                    pixelBuffer[i + 2] ^= 0xFF;    // Red
+                }
 
-                System.Runtime.InteropServices.Marshal.Copy(pixelBuffer, 0, bmpData.Scan0, pixelBuffer.Length);
+                System.Runtime.InteropServices.Marshal.Copy(pixelBuffer, 0, bmpData.Scan0, bytes);
 
                 image.UnlockBits(bmpData);
 
-                string[] nameSplit = imagePath.Split(new char[] { '/', '.' });
-                string newFilename = $"{nameSplit[nameSplit.Length - 2]}_inverse.{nameSplit[nameSplit.Length - 1]}";
+                // Generate new filename
+                string directory = AppDomain.CurrentDomain.BaseDirectory;
+                string filenameWithoutExtension = Path.GetFileNameWithoutExtension(imagePath);
+                string extension = Path.GetExtension(imagePath);
+                string newFilename = Path.Combine(directory, $"{filenameWithoutExtension}_inverse{extension}");
 
-                image.Save(newFilename);
+                image.Save(newFilename, image.RawFormat);
             }
         });
     }
