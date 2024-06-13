@@ -2,7 +2,6 @@
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Threading.Tasks;
-using System.Numerics;
 
 class ImageProcessor
 {
@@ -12,7 +11,7 @@ class ImageProcessor
     /// <param name="filenames">A list of images to invert.</param>
     public static void Inverse(string[] filenames)
     {
-        Parallel.ForEach(filenames, (imagePath) =>
+        foreach (string imagePath in filenames)
         {
             using (Bitmap image = new Bitmap(imagePath))
             {
@@ -22,27 +21,17 @@ class ImageProcessor
                 BitmapData bmpData = image.LockBits(new Rectangle(0, 0, width, height), ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb);
 
                 int stride = bmpData.Stride;
-                int bytesPerPixel = Image.GetPixelFormatSize(bmpData.PixelFormat) / 8;
-                int byteCount = stride * height;
-                byte[] pixelBuffer = new byte[byteCount];
+                byte[] pixelBuffer = new byte[stride * height];
 
                 System.Runtime.InteropServices.Marshal.Copy(bmpData.Scan0, pixelBuffer, 0, pixelBuffer.Length);
 
-                int vectorSize = Vector<byte>.Count;
-                byte[] maxValues = new byte[vectorSize];
-                for (int j = 0; j < vectorSize; j++)
-                    maxValues[j] = 255;
-                Vector<byte> maxVector = new Vector<byte>(maxValues);
-
-                Parallel.For(0, pixelBuffer.Length / vectorSize, i =>
+                for (int i = 0; i < pixelBuffer.Length / 4; i++)
                 {
-                    int offset = i * vectorSize;
-                    if (offset + vectorSize > pixelBuffer.Length) return;
-
-                    Vector<byte> pixelVector = new Vector<byte>(pixelBuffer, offset);
-                    Vector<byte> resultVector = maxVector - pixelVector;
-                    resultVector.CopyTo(pixelBuffer, offset);
-                });
+                    int x = i * 4;
+                    pixelBuffer[x] ^= 0xFF;
+                    pixelBuffer[x + 1] ^= 0xFF;
+                    pixelBuffer[x + 2] ^= 0xFF;
+                }
 
                 System.Runtime.InteropServices.Marshal.Copy(pixelBuffer, 0, bmpData.Scan0, pixelBuffer.Length);
 
@@ -53,6 +42,52 @@ class ImageProcessor
 
                 image.Save(newFilename);
             }
-        });
+        }
+    }
+
+    /// <summary>
+    /// Converts a list of image(s) to grayscale.
+    /// </summary>
+    /// <param name="filenames">A list of images to convert to grayscale.</param>
+    public static void Grayscale(string[] filenames)
+    {
+        foreach (string imagePath in filenames)
+        {
+            using (Bitmap image = new Bitmap(imagePath))
+            {
+                int width = image.Width;
+                int height = image.Height;
+
+                BitmapData bmpData = image.LockBits(new Rectangle(0, 0, width, height), ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb);
+
+                int stride = bmpData.Stride;
+                byte[] pixelBuffer = new byte[stride * height];
+
+                System.Runtime.InteropServices.Marshal.Copy(bmpData.Scan0, pixelBuffer, 0, pixelBuffer.Length);
+
+                for (int i = 0; i < pixelBuffer.Length / 4; i++)
+                {
+                    int x = i * 4;
+                    byte b = pixelBuffer[x];
+                    byte g = pixelBuffer[x + 1];
+                    byte r = pixelBuffer[x + 2];
+
+                    byte gray = (byte)(0.3 * r + 0.59 * g + 0.11 * b);
+
+                    pixelBuffer[x] = gray;
+                    pixelBuffer[x + 1] = gray;
+                    pixelBuffer[x + 2] = gray;
+                }
+
+                System.Runtime.InteropServices.Marshal.Copy(pixelBuffer, 0, bmpData.Scan0, pixelBuffer.Length);
+
+                image.UnlockBits(bmpData);
+
+                string[] nameSplit = imagePath.Split(new char[] { '/', '.' });
+                string newFilename = $"{nameSplit[nameSplit.Length - 2]}_grayscale.{nameSplit[nameSplit.Length - 1]}";
+
+                image.Save(newFilename);
+            }
+        }
     }
 }
