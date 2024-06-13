@@ -40,12 +40,10 @@ class ImageProcessor
                 image.UnlockBits(bmpData);
 
                 // Generate new filename
-                string directory = AppDomain.CurrentDomain.BaseDirectory;
-                string filenameWithoutExtension = Path.GetFileNameWithoutExtension(imagePath);
-                string extension = Path.GetExtension(imagePath);
-                string newFilename = Path.Combine(directory, $"{filenameWithoutExtension}_inverse{extension}");
+                string[] nameSplit = imagePath.Split(new char[] { '/', '.' });
+                string newFilename = $"{nameSplit[nameSplit.Length - 2]}_inverse.{nameSplit[nameSplit.Length - 1]}";
 
-                image.Save(newFilename, image.RawFormat);
+                image.Save(newFilename);
             }
         });
     }
