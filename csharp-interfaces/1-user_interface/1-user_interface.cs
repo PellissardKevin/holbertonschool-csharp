@@ -9,6 +9,7 @@ public abstract class Base
     /// Name property
     /// </summary>
     private string name { get; set; }
+
     /// <summary>
     /// Overrides ToString Method
     /// </summary>
@@ -16,8 +17,6 @@ public abstract class Base
     {
         return $"{name} is a {this.GetType()}";
     }
-
-
 }
 
 /// <summary>
@@ -30,8 +29,9 @@ public interface IInteractive
     /// </summary>
     void Interact();
 }
+
 /// <summary>
-/// IBreakable interface
+/// Breakable interface
 /// </summary>
 public interface IBreakable
 {
@@ -39,14 +39,16 @@ public interface IBreakable
     /// Used for item durability.
     /// </summary>
     /// <value>Getter and setter</value>
-    int durability { get; set; }
+    int Durability { get; set; }
+
     /// <summary>
     /// Used to break an item.
     /// </summary>
     void Break();
 }
+
 /// <summary>
-/// ICollectable interface
+/// Collectable interface
 /// </summary>
 public interface ICollectable
 {
@@ -54,28 +56,31 @@ public interface ICollectable
     /// Used to check if collected or not.
     /// </summary>
     /// <value>Getter and setter</value>
-    bool isCollected { get; set; }
+    bool IsCollected { get; set; }
+
     /// <summary>
     /// Used to collect something.
     /// </summary>
     void Collect();
 }
+
 /// <summary>
 /// Used for test purpose
 /// </summary>
 public class TestObject : Base, IInteractive, IBreakable, ICollectable
 {
-
     /// <summary>
     /// Used for item durability
     /// </summary>
     /// <value>Getter and setter</value>
-    public int durability { get; set; }
+    public int Durability { get; set; }
+
     /// <summary>
     /// Used for collection
     /// </summary>
     /// <value></value>
-    public bool isCollected { get; set; }
+    public bool IsCollected { get; set; }
+
     /// <summary>
     /// Used for interaction
     /// </summary>
@@ -83,6 +88,7 @@ public class TestObject : Base, IInteractive, IBreakable, ICollectable
     {
         // Method implementation.
     }
+
     /// <summary>
     /// Used to break item
     /// </summary>
