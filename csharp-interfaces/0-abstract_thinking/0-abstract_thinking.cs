@@ -1,13 +1,17 @@
-﻿using System;
+﻿﻿using System;
 
-public abstract class Base
-{
-    public string name { get; set; }
-
-    public override string ToString()
-    {
-        return $"{name} is a {GetType().Name}";
+/// <summary>
+/// Base class
+/// </summary>
+abstract class Base{
+    /// <summary>
+    /// Name property
+    /// </summary>
+    public string name {get; set;}
+    /// <summary>
+    /// Overrides ToString Method
+    /// </summary>
+    public override string ToString(){
+        return $"{name} is a {this.GetType()}";
     }
 }
-
-
