@@ -152,23 +152,18 @@ class Queue<T>
     }
 
     /// <summary>
-    /// Concatenates the values in the queue if they are of type String or Char.
+    /// Concatenate the nodes of a queue of strings/chars.
     /// </summary>
-    /// <returns>
-    /// A concatenated string of the queue values if the type is String or Char.
-    /// Returns null if the queue is empty or if the type is not String or Char.
-    /// </returns>
-    /// <remarks>
-    /// If the queue is empty, it will print "Queue is empty" and return null.
-    /// If the type is not String or Char, it will print a message indicating
-    /// that Concatenate() is for a queue of Strings or Chars only and return null.
-    /// </remarks>
+    /// <returns></returns>
     public String Concatenate()
     {
+
         if (head != null)
         {
+
             if (typeof(T) == typeof(String))
             {
+
                 Node runner = head.next;
                 String concat = (String)(Object)head.value;
 
@@ -179,9 +174,11 @@ class Queue<T>
                 }
 
                 return concat;
+
             }
             else if (typeof(T) == typeof(Char))
             {
+
                 Node runner = head.next;
                 String concat = ((Char)(Object)head.value).ToString();
 
@@ -192,12 +189,16 @@ class Queue<T>
                 }
 
                 return concat;
+
             }
             else
             {
+
                 Console.WriteLine("Concatenate() is for a queue of Strings or Chars only.");
                 return null;
+
             }
+
         }
         Console.WriteLine("Queue is empty");
         return null;
