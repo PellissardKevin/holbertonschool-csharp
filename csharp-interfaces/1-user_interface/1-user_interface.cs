@@ -9,7 +9,7 @@ public abstract class Base
     /// Gets or sets the name of the object.
     /// </summary>
     /// <value>The name of the object.</value>
-    private string name { get; set; }
+    public string name { get; set; }
 
     /// <summary>
     /// Returns a string that represents the current object.
