@@ -8,17 +8,17 @@ public class Player
     /// <summary>
     /// Gets or sets the name of the player.
     /// </summary>
-    public string name { get; set; }
+    private string name { get; set; }
 
     /// <summary>
     /// Gets or sets the maximum health points of the player.
     /// </summary>
-    public float maxHp { get; set; }
+    private float maxHp { get; set; }
 
     /// <summary>
     /// Gets or sets the current health points of the player.
     /// </summary>
-    public float hp { get; set; }
+    public float hp { get; private set; }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="Player"/> class with a specified name and maximum health points.
@@ -28,12 +28,14 @@ public class Player
     public Player(string name = "Player", float maxHp = 100f)
     {
         this.name = name;
-        this.maxHp = maxHp;
-
         if (maxHp <= 0)
         {
             this.maxHp = 100f;
             Console.WriteLine("maxHp must be greater than 0. maxHp set to 100f by default.");
+        }
+        else
+        {
+            this.maxHp = maxHp;
         }
 
         this.hp = this.maxHp;
