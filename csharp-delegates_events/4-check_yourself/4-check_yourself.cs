@@ -68,6 +68,11 @@ public class Player
     public float hp { get; private set; }
 
     /// <summary>
+    /// Gets or sets the status of the player.
+    /// </summary>
+    private string status { get; set; }
+
+    /// <summary>
     /// Initializes a new instance of the <see cref="Player"/> class with a specified name and maximum health points.
     /// </summary>
     /// <param name="name">The name of the player. Defaults to "Player".</param>
@@ -86,8 +91,8 @@ public class Player
         }
 
         this.hp = this.maxHp;
+        this.status = $"{name} is ready to go!";
         HPCheck += CheckStatus; // Assign CheckStatus to the HPCheck event handler
-        OnHPCheck(new CurrentHPArgs(this.hp, $"{name} is ready to go!"));
     }
 
     /// <summary>
@@ -156,7 +161,7 @@ public class Player
         {
             this.hp = newHp;
         }
-        OnHPCheck(new CurrentHPArgs(this.hp, GetStatus())); // Trigger the HPCheck event
+        OnHPCheck(new CurrentHPArgs(this.hp)); // Trigger the HPCheck event
     }
 
     /// <summary>
@@ -175,21 +180,28 @@ public class Player
     /// <param name="e">Event data.</param>
     private void CheckStatus(object sender, CurrentHPArgs e)
     {
-        Console.WriteLine(e.Status);
-    }
+        if (e.CurrentHp == maxHp)
+        {
+            status = $"{name} is in perfect health!";
+        }
+        else if (e.CurrentHp >= maxHp / 2 && e.CurrentHp < maxHp)
+        {
+            status = $"{name} is doing well!";
+        }
+        else if (e.CurrentHp >= maxHp / 4 && e.CurrentHp < maxHp / 2)
+        {
+            status = $"{name} isn't doing too great...";
+        }
+        else if (e.CurrentHp > 0 && e.CurrentHp < maxHp / 4)
+        {
+            status = $"{name} needs help!";
+        }
+        else if (e.CurrentHp == 0)
+        {
+            status = $"{name} is knocked out!";
+        }
 
-    /// <summary>
-    /// Gets the current status of the player based on HP.
-    /// </summary>
-    /// <returns>The current status.</returns>
-    private string GetStatus()
-    {
-        if (hp == maxHp)
-            return $"{name} is at full health!";
-        else if (hp == 0)
-            return $"{name} is knocked out!";
-        else
-            return $"{name} is fighting!";
+        Console.WriteLine(status);
     }
 
     /// <summary>
@@ -225,18 +237,11 @@ public class CurrentHPArgs : EventArgs
     public float CurrentHp { get; private set; }
 
     /// <summary>
-    /// Gets the status of the player.
-    /// </summary>
-    public string Status { get; private set; }
-
-    /// <summary>
     /// Initializes a new instance of the <see cref="CurrentHPArgs"/> class.
     /// </summary>
-    /// <param name="currentHp">The current HP of the player.</param>
-    /// <param name="status">The status of the player.</param>
-    public CurrentHPArgs(float currentHp, string status)
+    /// <param name="newHp">The current HP of the player.</param>
+    public CurrentHPArgs(float newHp)
     {
-        CurrentHp = currentHp;
-        Status = status;
+        CurrentHp = newHp;
     }
 }
