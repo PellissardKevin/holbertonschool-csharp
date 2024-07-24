@@ -70,7 +70,8 @@ public class Player
     /// </summary>
     /// <param name="name">The name of the player. Defaults to "Player".</param>
     /// <param name="maxHp">The maximum health points of the player. Defaults to 100f.</param>
-    public Player(string name = "Player", float maxHp = 100f)
+    /// <param name="status">The status of the player. Defaults to Undefined.</param>
+    public Player(string name = "Player", float maxHp = 100f, string status = "Undefined")
     {
         this.name = name;
         if (maxHp <= 0)
@@ -84,7 +85,10 @@ public class Player
         }
 
         this.hp = this.maxHp;
-        this.status = $"{name} is ready to go!";
+        if (status == "Undefined")
+        {
+            this.status = $"{name} is ready to go!";
+        }
 
         HPCheck += CheckStatus;
     }
@@ -186,16 +190,17 @@ public class Player
     /// <param name="e">Event data.</param>
     private void CheckStatus(object sender, CurrentHPArgs e)
     {
-        if (e.currentHp == this.maxHp)
+        if (e.currentHp == maxHp)
             status = $"{name} is in perfect health!";
-        else if (e.currentHp >= (this.maxHp * 0.5) && e.currentHp < this.maxHp)
+        else if (e.currentHp >= maxHp / 2 && e.currentHp < maxHp)
             status = $"{name} is doing well!";
-        else if (e.currentHp >= (this.maxHp * 0.25) && e.currentHp < this.maxHp)
+        else if (e.currentHp >= maxHp / 4 && e.currentHp < maxHp / 2)
             status = $"{name} isn't doing too great...";
-        else if (e.currentHp > 0 && e.currentHp < (this.maxHp * 0.25))
+        else if (e.currentHp > 0 && e.currentHp < maxHp / 4)
             status = $"{name} needs help!";
-        else if (e.currentHp <= 0)
+        else if (e.currentHp == 0)
             status = $"{name} is knocked out!";
+
         Console.WriteLine(status);
     }
 }
