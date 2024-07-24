@@ -161,16 +161,7 @@ public class Player
         {
             this.hp = newHp;
         }
-        OnHPCheck(new CurrentHPArgs(this.hp)); // Trigger the HPCheck event
-    }
-
-    /// <summary>
-    /// Invokes the HPCheck event.
-    /// </summary>
-    /// <param name="e">Event data.</param>
-    protected virtual void OnHPCheck(CurrentHPArgs e)
-    {
-        HPCheck?.Invoke(this, e);
+        CheckStatus(HPCheck, new CurrentHPArgs(this.hp));
     }
 
     /// <summary>
