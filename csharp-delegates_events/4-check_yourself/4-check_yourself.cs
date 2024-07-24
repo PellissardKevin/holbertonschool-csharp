@@ -109,7 +109,7 @@ public class Player
     /// <param name="damage">The amount of damage.</param>
     public void TakeDamage(float damage)
     {
-        if (damage <= 0)
+        if (damage < 0)
         {
             Console.WriteLine($"{name} takes 0 damage!");
         }
@@ -129,7 +129,7 @@ public class Player
     /// <param name="heal">The amount of health to restore.</param>
     public void HealDamage(float heal)
     {
-        if (heal <= 0)
+        if (heal < 0)
         {
             Console.WriteLine($"{name} heals 0 HP!");
         }
@@ -151,7 +151,7 @@ public class Player
         {
             this.hp = 0;
         }
-        else if (newHp > maxHp)
+        else if (newHp >= maxHp)
         {
             this.hp = maxHp;
         }
@@ -173,7 +173,7 @@ public class Player
         switch (modifier)
         {
             case Modifier.Weak:
-                return baseValue / 2;
+                return baseValue * 0.5f;
             case Modifier.Base:
                 return baseValue;
             case Modifier.Strong:
