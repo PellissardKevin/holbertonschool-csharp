@@ -7,7 +7,7 @@ namespace InventoryManager
 {
     class Program
     {
-        private static JSONStorage storage = new JSONStorage();
+        private static JSONStorage? storage = new JSONStorage();
 
         static void Main(string[] args)
         {
@@ -252,10 +252,18 @@ namespace InventoryManager
         private static void DeleteObject(string className, string id)
         {
             string key = $"{className}.{id}";
-            if (storage.All().Remove(key))
+            var allObjects = storage.All(); // Get the dictionary
+            if (allObjects.Remove(key)) // Attempt to remove the object
             {
-                storage.Save();
-                Console.WriteLine($"{className} with ID {id} deleted");
+                try
+                {
+                    storage.Save(); // Save changes to JSON
+                    Console.WriteLine($"{className} with ID {id} deleted");
+                }
+                catch (Exception ex)
+                {
+                    PrintError($"Error saving changes: {ex.Message}");
+                }
             }
             else
             {

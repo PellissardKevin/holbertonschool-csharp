@@ -4,7 +4,6 @@ using System.IO;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-
 namespace InventoryLibrary
 {
     public class JSONStorage
@@ -13,8 +12,9 @@ namespace InventoryLibrary
 
         public Dictionary<string, BaseClass> All()
         {
-            return new Dictionary<string, BaseClass>(objects);
+            return objects;
         }
+
 
         public void New(BaseClass obj)
         {
@@ -30,7 +30,11 @@ namespace InventoryLibrary
 
         public void Save()
         {
-            string directoryPath = "storage";
+            string parentDirectory = Directory.GetParent(Directory.GetCurrentDirectory())?.FullName;
+            if (parentDirectory == null)
+                throw new InvalidOperationException("Parent directory not found.");
+
+            string directoryPath = Path.Combine(parentDirectory, "storage");
             if (!Directory.Exists(directoryPath))
             {
                 Directory.CreateDirectory(directoryPath);
@@ -52,12 +56,19 @@ namespace InventoryLibrary
 
         public void Load()
         {
-            string filePath = Path.Combine("storage", "inventory_manager.json");
+            string parentDirectory = Directory.GetParent(Directory.GetCurrentDirectory())?.FullName;
+            if (parentDirectory == null)
+                throw new InvalidOperationException("Parent directory not found.");
+
+            string filePath = Path.Combine(parentDirectory, "storage", "inventory_manager.json");
 
             if (!File.Exists(filePath))
                 throw new FileNotFoundException("The JSON file does not exist.", filePath);
 
             string jsonString = File.ReadAllText(filePath);
+
+            if (string.IsNullOrWhiteSpace(jsonString))
+                throw new InvalidOperationException("The input does not contain any JSON tokens.");
 
             objects = JsonSerializer.Deserialize<Dictionary<string, BaseClass>>(jsonString, new JsonSerializerOptions
             {
