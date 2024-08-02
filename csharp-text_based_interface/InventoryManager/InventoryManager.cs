@@ -5,7 +5,7 @@ using InventoryLibrary;
 
 namespace InventoryManager
 {
-    class Program
+    public class Program
     {
         private static JSONStorage? storage = new JSONStorage();
 
@@ -136,7 +136,7 @@ namespace InventoryManager
             Console.WriteLine("Exit - quit the application");
         }
 
-        private static void ShowClassNames()
+        public static void ShowClassNames()
         {
             var classNames = storage.All().Keys.Select(key => key.Split('.')[0]).Distinct();
             Console.WriteLine("Available Class Names:");
