@@ -7,7 +7,7 @@ using InventoryLibrary;
 using System.Linq;
 using System;
 
-namespace InventoryManager.Tests
+namespace InventoryManagement.Tests
 {
     public class ProgramTests
     {
