@@ -49,6 +49,7 @@ namespace InventoryLibrary
             File.WriteAllText(filePath, jsonString);
         }
 
+
         public void Load()
         {
             string filePath = Path.Combine("storage", "inventory_manager.json");
@@ -64,5 +65,6 @@ namespace InventoryLibrary
                 PropertyNameCaseInsensitive = true
             }) ?? new Dictionary<string, BaseClass>();
         }
+
     }
 }

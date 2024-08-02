@@ -21,7 +21,7 @@ namespace InventoryManager
             while (true)
             {
                 // Read user input
-                string? input = Console.ReadLine();
+                string input = Console.ReadLine();
                 if (string.IsNullOrWhiteSpace(input)) continue;
 
                 // Split input into command parts
