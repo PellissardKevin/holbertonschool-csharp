@@ -5,8 +5,8 @@ namespace InventoryLibrary
     public class Inventory : BaseClass
     {
         private int quantity;
-        public string UserId { get; set; }  // Required property, should be linked to User Id
-        public string ItemId { get; set; }  // Required property, should be linked to Item Id
+        public string UserId { get; set; } = string.Empty;  // Required property, should be linked to User Id
+        public string ItemId { get; set; } = string.Empty;  // Required property, should be linked to Item Id
         public int Quantity
         {
             get => quantity;

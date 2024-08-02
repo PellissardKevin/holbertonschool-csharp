@@ -8,16 +8,13 @@ namespace InventoryLibrary
 {
     public class JSONStorage
     {
-        // Dictionary to hold objects
         private Dictionary<string, BaseClass> objects = new Dictionary<string, BaseClass>();
 
-        // Property to access objects dictionary
         public Dictionary<string, BaseClass> All()
         {
             return new Dictionary<string, BaseClass>(objects);
         }
 
-        // Method to add a new object
         public void New(BaseClass obj)
         {
             if (obj == null)
@@ -30,10 +27,8 @@ namespace InventoryLibrary
             objects[key] = obj;
         }
 
-        // Method to save objects to JSON file
         public void Save()
         {
-            // Ensure the directory exists
             string directoryPath = "storage";
             if (!Directory.Exists(directoryPath))
             {
@@ -44,18 +39,15 @@ namespace InventoryLibrary
 
             var options = new JsonSerializerOptions
             {
-                WriteIndented = true,  // For easier readability
-                Converters = { new JsonStringEnumConverter() }
+                WriteIndented = true,
+                Converters = { new JsonStringEnumConverter() },
+                DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingDefault
             };
 
-            // Serialize dictionary to JSON
             string jsonString = JsonSerializer.Serialize(objects, options);
-
-            // Write JSON to file
             File.WriteAllText(filePath, jsonString);
         }
 
-        // Method to load objects from JSON file
         public void Load()
         {
             string filePath = Path.Combine("storage", "inventory_manager.json");
@@ -65,11 +57,11 @@ namespace InventoryLibrary
 
             string jsonString = File.ReadAllText(filePath);
 
-            // Deserialize JSON to dictionary
             objects = JsonSerializer.Deserialize<Dictionary<string, BaseClass>>(jsonString, new JsonSerializerOptions
             {
-                Converters = { new JsonStringEnumConverter() }
-            });
+                Converters = { new JsonStringEnumConverter() },
+                PropertyNameCaseInsensitive = true
+            }) ?? new Dictionary<string, BaseClass>();
         }
     }
 }
