@@ -13,7 +13,7 @@ namespace InventoryLibrary
         public float Price
         {
             get => price;
-            set => price = Math.Round(value, 2);  // Limit to 2 decimal points
+            set => price = (float)Math.Round(value, 2);  // Limit to 2 decimal points
         }
 
         public List<string> Tags { get; set; } = new List<string>();  // Optional property
