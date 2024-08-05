@@ -1,1 +1,28 @@
-{}
+{
+  "Item.addc954f-e5be-41b2-a433-3f761c368770": {
+    "Type": "InventoryLibrary.Item, InventoryLibrary, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+    "Name": "Key",
+    "Description": "Key for the chest",
+    "Price": 0,
+    "Tags": [],
+    "Id": "addc954f-e5be-41b2-a433-3f761c368770",
+    "DateCreated": "2024-08-05T13:38:47.334993+02:00",
+    "DateUpdated": "2024-08-05T13:38:47.3351034+02:00"
+  },
+  "User.6fb05662-9c04-43c5-b290-e85cbdab58e5": {
+    "Type": "InventoryLibrary.User, InventoryLibrary, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+    "Name": "Keyvin",
+    "Id": "6fb05662-9c04-43c5-b290-e85cbdab58e5",
+    "DateCreated": "2024-08-05T13:39:02.9704727+02:00",
+    "DateUpdated": "2024-08-05T13:39:02.9704742+02:00"
+  },
+  "Inventory.cfe1d883-8b6e-4207-958b-854cc48b9edc": {
+    "Type": "InventoryLibrary.Inventory, InventoryLibrary, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+    "UserId": "6fb05662-9c04-43c5-b290-e85cbdab58e5",
+    "ItemId": "addc954f-e5be-41b2-a433-3f761c368770",
+    "Quantity": 1,
+    "Id": "cfe1d883-8b6e-4207-958b-854cc48b9edc",
+    "DateCreated": "2024-08-05T13:39:39.9784393+02:00",
+    "DateUpdated": "2024-08-05T13:39:39.978441+02:00"
+  }
+}

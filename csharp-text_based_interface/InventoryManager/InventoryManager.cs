@@ -113,7 +113,7 @@ namespace InventoryManager
         {
             try
             {
-                storage.Load();
+                storage?.Load();
             }
             catch (Exception ex)
             {
@@ -138,6 +138,12 @@ namespace InventoryManager
 
         public static void ShowClassNames()
         {
+            if (storage == null)
+            {
+                PrintError("Storage is not initialized");
+                return;
+            }
+
             var classNames = storage.All().Keys.Select(key => key.Split('.')[0]).Distinct();
             Console.WriteLine("Available Class Names:");
             foreach (var className in classNames)
@@ -148,6 +154,12 @@ namespace InventoryManager
 
         private static void ShowAllObjects()
         {
+            if (storage == null)
+            {
+                PrintError("Storage is not initialized");
+                return;
+            }
+
             foreach (var obj in storage.All())
             {
                 Console.WriteLine($"{obj.Key}: {obj.Value}");
@@ -156,17 +168,14 @@ namespace InventoryManager
 
         private static void ShowAllObjectsByClassName(string className)
         {
-            var objects = storage.All()
-                .Where(kvp => kvp.Key.StartsWith(className, StringComparison.OrdinalIgnoreCase))
-                .ToList();
-
-            if (objects.Count == 0)
+            if (storage == null)
             {
-                Console.WriteLine($"No objects found for class '{className}'");
+                PrintError("Storage is not initialized");
                 return;
             }
 
-            foreach (var obj in objects)
+            var objectsByClass = storage.All().Where(obj => obj.Key.StartsWith(className + "."));
+            foreach (var obj in objectsByClass)
             {
                 Console.WriteLine($"{obj.Key}: {obj.Value}");
             }
@@ -174,38 +183,97 @@ namespace InventoryManager
 
         private static void CreateObject(string className)
         {
+            if (storage == null)
+            {
+                PrintError("Storage is not initialized");
+                return;
+            }
+
             BaseClass newObject;
 
             switch (className.ToLower())
             {
                 case "item":
+                    Console.Write("Enter Item Name: ");
+                    string itemName = Console.ReadLine() ?? string.Empty;
+
+                    if (string.IsNullOrWhiteSpace(itemName))
+                    {
+                        PrintError("Item Name is required.");
+                        return;
+                    }
+
+                    Console.Write("Enter Item Description (optional): ");
+                    string? itemDescription = Console.ReadLine();
+
+                    Console.Write("Enter Item Price (optional, default is 0.00): ");
+                    if (!float.TryParse(Console.ReadLine(), out float itemPrice))
+                    {
+                        itemPrice = 0.00f;
+                    }
+
+                    Console.Write("Enter Item Tags (comma-separated, optional): ");
+                    string itemTagsInput = Console.ReadLine() ?? string.Empty;
+                    List<string> itemTags = new List<string>(itemTagsInput.Split(',', StringSplitOptions.RemoveEmptyEntries));
+
                     newObject = new Item
                     {
                         Id = Guid.NewGuid().ToString(),
                         DateCreated = DateTime.Now,
                         DateUpdated = DateTime.Now,
-                        Name = "NewItem" // Default value
+                        Name = itemName,
+                        Description = itemDescription,
+                        Price = itemPrice,
+                        Tags = itemTags
                     };
                     break;
 
                 case "user":
+                    Console.Write("Enter User Name: ");
+                    string userName = Console.ReadLine() ?? string.Empty;
+
+                    if (string.IsNullOrWhiteSpace(userName))
+                    {
+                        PrintError("User Name is required.");
+                        return;
+                    }
+
                     newObject = new User
                     {
                         Id = Guid.NewGuid().ToString(),
                         DateCreated = DateTime.Now,
                         DateUpdated = DateTime.Now,
-                        Name = "NewUser" // Default value
+                        Name = userName
                     };
                     break;
 
                 case "inventory":
+                    Console.Write("Enter User ID: ");
+                    string userId = Console.ReadLine() ?? string.Empty;
+
+                    Console.Write("Enter Item ID: ");
+                    string itemId = Console.ReadLine() ?? string.Empty;
+
+                    if (string.IsNullOrWhiteSpace(userId) || string.IsNullOrWhiteSpace(itemId))
+                    {
+                        PrintError("User ID and Item ID are required.");
+                        return;
+                    }
+
+                    Console.Write("Enter Quantity (default is 1): ");
+                    if (!int.TryParse(Console.ReadLine(), out int inventoryQuantity) || inventoryQuantity < 0)
+                    {
+                        inventoryQuantity = 1;
+                    }
+
                     newObject = new Inventory
                     {
                         Id = Guid.NewGuid().ToString(),
                         DateCreated = DateTime.Now,
                         DateUpdated = DateTime.Now,
-                        UserId = "DefaultUserId",
-                        ItemId = "DefaultItemId"
+                        UserId = userId,
+                        ItemId = itemId,
+                        Quantity = inventoryQuantity
                     };
                     break;
 
@@ -214,13 +282,27 @@ namespace InventoryManager
                     return;
             }
 
-            storage.New(newObject);
-            storage.Save();
-            Console.WriteLine($"{className} created with ID: {newObject.Id}");
+            // Add the new object to the storage and save it
+            try
+            {
+                storage.New(newObject);
+                storage.Save();
+                Console.WriteLine($"{className} created with ID: {newObject.Id}");
+            }
+            catch (Exception ex)
+            {
+                PrintError($"Failed to save the {className}: {ex.Message}");
+            }
         }
 
         private static void ShowObject(string className, string id)
         {
+            if (storage == null)
+            {
+                PrintError("Storage is not initialized");
+                return;
+            }
+
             string key = $"{className}.{id}";
             if (storage.All().TryGetValue(key, out var obj))
             {
@@ -234,6 +316,12 @@ namespace InventoryManager
 
         private static void UpdateObject(string className, string id)
         {
+            if (storage == null)
+            {
+                PrintError("Storage is not initialized");
+                return;
+            }
+
             string key = $"{className}.{id}";
             if (storage.All().TryGetValue(key, out var obj))
             {
@@ -251,6 +339,12 @@ namespace InventoryManager
 
         private static void DeleteObject(string className, string id)
         {
+            if (storage == null)
+            {
+                PrintError("Storage is not initialized");
+                return;
+            }
+
             string key = $"{className}.{id}";
             var allObjects = storage.All(); // Get the dictionary
             if (allObjects.Remove(key)) // Attempt to remove the object

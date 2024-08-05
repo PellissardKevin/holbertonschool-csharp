@@ -15,7 +15,6 @@ namespace InventoryLibrary
             return objects;
         }
 
-
         public void New(BaseClass obj)
         {
             if (obj == null)
@@ -25,12 +24,12 @@ namespace InventoryLibrary
             if (objects.ContainsKey(key))
                 throw new InvalidOperationException($"Object with key {key} already exists.");
 
-            objects[key] = obj;
+            objects[key] = obj;  // Add or update the object in the dictionary
         }
 
         public void Save()
         {
-            string parentDirectory = Directory.GetParent(Directory.GetCurrentDirectory())?.FullName;
+            string parentDirectory = Directory.GetParent(Directory.GetCurrentDirectory())?.FullName ?? throw new InvalidOperationException("Parent directory not found.");
             if (parentDirectory == null)
                 throw new InvalidOperationException("Parent directory not found.");
 
@@ -45,18 +44,17 @@ namespace InventoryLibrary
             var options = new JsonSerializerOptions
             {
                 WriteIndented = true,
-                Converters = { new JsonStringEnumConverter() },
+                Converters = { new BaseClassJsonConverter() },
                 DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingDefault
             };
 
             string jsonString = JsonSerializer.Serialize(objects, options);
-            File.WriteAllText(filePath, jsonString);
+            File.WriteAllText(filePath, jsonString);  // Write the serialized string to file
         }
-
 
         public void Load()
         {
-            string parentDirectory = Directory.GetParent(Directory.GetCurrentDirectory())?.FullName;
+            string parentDirectory = Directory.GetParent(Directory.GetCurrentDirectory())?.FullName ?? throw new InvalidOperationException("Parent directory not found.");
             if (parentDirectory == null)
                 throw new InvalidOperationException("Parent directory not found.");
 
@@ -75,7 +73,7 @@ namespace InventoryLibrary
                 Converters = { new JsonStringEnumConverter() },
                 PropertyNameCaseInsensitive = true
             }) ?? new Dictionary<string, BaseClass>();
-        }
 
+        }
     }
 }
